@@ -2,8 +2,8 @@
 
 import type { NavLink } from "@/config/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { NavLinks } from "../NavLinks";
 import styles from "./MobileMenu.module.css";
-import { NavLinks } from "./NavLinks";
 
 /** Props for {@link MobileMenu}. */
 export interface MobileMenuProps {

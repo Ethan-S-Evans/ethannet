@@ -1,6 +1,6 @@
 import type { NavLink, SocialLink } from "@/config/navigation";
+import { NavLinks } from "../NavLinks";
 import styles from "./Footer.module.css";
-import { NavLinks } from "./NavLinks";
 
 /** Props for {@link Footer}. */
 export interface FooterProps {

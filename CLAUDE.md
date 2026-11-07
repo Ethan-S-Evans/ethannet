@@ -24,7 +24,7 @@ Package names are `@ethannet/api`, `@ethannet/ui`, `@ethannet/media-server`, `@e
 
 ```
 pnpm --filter @ethannet/api test
-pnpm --filter @ethannet/ui exec vitest run src/components/HelloCard.test.tsx
+pnpm --filter @ethannet/ui exec vitest run src/components/HelloCard/HelloCard.test.tsx
 pnpm --filter @ethannet/ui exec vitest run -t "test name"
 pnpm --filter @ethannet/e2e exec playwright test tests/home.spec.ts
 ```
@@ -36,7 +36,7 @@ pnpm --filter @ethannet/e2e exec playwright test tests/home.spec.ts
   - The Node apps (api, media-server, core) run via `tsx watch` in dev and are bundled by `tsup` for production (`tsc --outDir` fails on files outside each app's `rootDir`). `tsc` is used only for typechecking.
 - **api**: routers in `apps/api/src/routes/`, mounted under `/api/*` in `src/index.ts`. Response-building logic is extracted into pure functions (e.g. `buildHelloResponse`) so Vitest can test it without HTTP. CORS is wide open for local dev only.
 - **media-server**: serves files from `MEDIA_DIR` (default `apps/media-server/media`). The router is built by a factory (`buildMediaRouter(mediaDir)`) so the directory is injected rather than hard-coded.
-- **ui**: async server components fetch the api at `NEXT_PUBLIC_API_URL` (default `http://localhost:4001`). Presentational components in `src/components/` take data as props and each has a `.test.tsx` (jsdom + Testing Library) and `.stories.tsx`. `@/*` aliases `apps/ui/src/*` (mirrored in `vitest.config.ts`).
+- **ui**: async server components fetch the api at `NEXT_PUBLIC_API_URL` (default `http://localhost:4001`). Presentational components in `src/components/` take data as props. Each lives in its own folder (`src/components/HelloCard/`) holding the component, its `.test.tsx` (jsdom + Testing Library), `.stories.tsx`, any `.module.css`, and an `index.ts` that re-exports it, so imports stay `@/components/HelloCard`. `@/*` aliases `apps/ui/src/*` (mirrored in `vitest.config.ts`).
   - Site-wide layout (header, footer, mobile menu) lives in `src/components/layout/`. The link lists live in `src/config/navigation.ts` and are injected only by `app/layout.tsx`; components never import config directly. See [docs/features/site-layout.md](docs/features/site-layout.md).
   - Styling is CSS Modules: an `X.module.css` beside each component, with resets and color variables in `app/globals.css`.
 - **Code style**: Biome with 2-space indent, double quotes, organized imports. TS is `strict` with `noUncheckedIndexedAccess`; per-package tsconfigs extend `tsconfig.base.json`.

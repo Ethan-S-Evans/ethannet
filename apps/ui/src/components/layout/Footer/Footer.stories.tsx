@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sampleNavLinks, sampleSocialLinks } from "../fixtures";
 import { Footer } from "./Footer";
-import { sampleNavLinks, sampleSocialLinks } from "./fixtures";
 
 const meta: Meta<typeof Footer> = {
   title: "Layout/Footer",

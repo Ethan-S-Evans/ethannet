@@ -4,7 +4,7 @@ Every page in the ui shares one header and one footer. The root layout (`apps/ui
 
 ## Components
 
-All in `apps/ui/src/components/layout/`, each with a `.module.css`, a `.test.tsx` and a `.stories.tsx` beside it.
+All in `apps/ui/src/components/layout/`, each in its own folder (e.g. `layout/Header/`) with its `.module.css`, `.test.tsx`, `.stories.tsx` and an `index.ts` that re-exports it, so it is imported as `@/components/layout/Header`. Shared story fixtures are in `layout/fixtures.ts`.
 
 | Component | Purpose |
 | --- | --- |

@@ -1,8 +1,8 @@
 import type { NavLink } from "@/config/navigation";
+import { Logo } from "../Logo";
+import { MobileMenu } from "../MobileMenu";
+import { NavLinks } from "../NavLinks";
 import styles from "./Header.module.css";
-import { Logo } from "./Logo";
-import { MobileMenu } from "./MobileMenu";
-import { NavLinks } from "./NavLinks";
 
 /** Props for {@link Header}. */
 export interface HeaderProps {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sampleNavLinks } from "../fixtures";
 import { NavLinks } from "./NavLinks";
-import { sampleNavLinks } from "./fixtures";
 
 const meta: Meta<typeof NavLinks> = {
   title: "Layout/NavLinks",

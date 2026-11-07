@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, within } from "storybook/test";
+import { sampleNavLinks } from "../fixtures";
 import { MobileMenu } from "./MobileMenu";
-import { sampleNavLinks } from "./fixtures";
 
 const meta: Meta<typeof MobileMenu> = {
   title: "Layout/MobileMenu",
