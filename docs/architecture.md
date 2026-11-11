@@ -7,8 +7,10 @@
 - `apps/core` — Node.js app (TypeScript).
 - `apps/media-server` — Express server (TypeScript) that reads files from a local media directory (`MEDIA_DIR`, defaults to `apps/media-server/media`) and serves them to clients: `GET /api/media` lists files as JSON, `GET /media/<name>` streams a file via `express.static`.
 - `apps/e2e` — Playwright end-to-end tests that exercise api + ui together. It's a workspace package rather than living inside either app, since it depends on both.
-- `packages/types` — TypeScript types shared between api and ui (API request/response contracts).
-- `docs` — documentation for the whole repo, including [plans](plans).
+- `packages/types` — TypeScript types shared between api and ui (API request/response contracts, and the `UiMessages` copy contract).
+- `packages/messages` — the ui copy as next-intl-style JSON (`messages/en.json`), shared by ui components and tests so they can't drift. See [UI messages](features/ui-messages.md).
+- `packages/navigation` — the site link config (`navLinks`, `socialLinks`: each a route plus the message key of its label) and `resolveLinks`, shared by the ui layout and the e2e suite. See [Site layout](features/site-layout.md).
+- `docs` — documentation for the whole repo: [plans](plans) (one per piece of work, named `YYYY-MM-DD-short-slug.md`) and [features](features), which describe how each feature works and how to test it (e.g. [Site layout](features/site-layout.md)).
 
 `apps/` holds things that run or deploy; `packages/` holds things apps import. This mirrors the convention used by Turborepo, Vercel's examples, and the T3 stack.
 
@@ -16,7 +18,9 @@
 
 `packages/types/package.json` points its `main`/`types`/`exports` directly at `./src/index.ts` — real TypeScript source, not compiled output. pnpm symlinks `node_modules/@ethannet/types` to `packages/types`, so both api and ui resolve `@ethannet/types` straight to source.
 
-- **Next.js** normally refuses to process `.ts` files under `node_modules`, even symlinked workspace ones. `transpilePackages: ["@ethannet/types"]` in `apps/ui/next.config.ts` is the documented escape hatch for monorepo-internal packages.
+`packages/messages` and `packages/navigation` work the same way, except that they're runtime imports (a JSON object, and plain arrays and a function), not `import type`.
+
+- **Next.js** normally refuses to process `.ts` files under `node_modules`, even symlinked workspace ones. `transpilePackages: ["@ethannet/messages", "@ethannet/navigation", "@ethannet/types"]` in `apps/ui/next.config.ts` is the documented escape hatch for monorepo-internal packages.
 - **Express** dev loop uses `tsx watch`, which transpiles any `.ts` file it imports regardless of where it lives, so no extra config is needed.
 
 Both consumers `import type` the shared interfaces, so there's zero runtime coupling — editing `packages/types/src/index.ts` is picked up immediately by both apps with no build step in between.
@@ -28,7 +32,8 @@ The api's production build uses `tsup` (an esbuild wrapper) instead of `tsc`, be
 ## Tooling
 
 - **Biome** — a single root `biome.json` handles linting and formatting for the whole repo (replaces ESLint + Prettier).
-- **Vitest** — unit tests, scoped per-package: the api tests a pure function extracted from its route handler (`node` environment); the ui tests a presentational component with `@testing-library/react` (`jsdom` environment).
-- **Storybook** — lives in `apps/ui` (via `@storybook/nextjs`) for developing UI components in isolation.
+- **Vitest** — unit tests, scoped per-package: the api tests a pure function extracted from its route handler (`node` environment); the ui tests a presentational component with `@testing-library/react` (`jsdom` environment), using `@testing-library/user-event` for realistic clicks and key presses.
+- **CSS Modules** — the ui's styling approach. Each component has an `X.module.css` beside it; global resets and color variables live in `apps/ui/src/app/globals.css`. No CSS framework.
+- **Storybook** — lives in `apps/ui` (via `@storybook/nextjs`) for developing UI components in isolation. It doubles as the UI documentation: each story file uses autodocs.
 - **Changesets** — manages the single shared version of every package; see [Branching, versioning and releasing](releasing.md).
 - **Playwright** — lives in `apps/e2e`, which starts both the api and ui dev servers itself (via Playwright's `webServer` array config) before running browser tests against the full stack.

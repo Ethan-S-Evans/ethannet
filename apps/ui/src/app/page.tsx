@@ -1,4 +1,5 @@
 import { HelloCard } from "@/components/HelloCard";
+import { messages } from "@ethannet/messages";
 import type { HelloResponse } from "@ethannet/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4001";
@@ -13,5 +14,5 @@ async function getHello(): Promise<HelloResponse> {
 
 export default async function HomePage() {
   const data = await getHello();
-  return <HelloCard {...data} />;
+  return <HelloCard {...data} messages={messages.HelloCard} />;
 }

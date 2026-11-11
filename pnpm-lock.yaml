@@ -60,7 +60,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: '>=4.1.11'
-        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1(supports-color@8.1.1))(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
 
   apps/core:
     dependencies:
@@ -82,7 +82,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: '>=4.1.11'
-        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1(supports-color@8.1.1))(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
 
   apps/e2e:
     devDependencies:
@@ -119,10 +119,16 @@ importers:
         version: 5.9.3
       vitest:
         specifier: '>=4.1.11'
-        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1(supports-color@8.1.1))(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
 
   apps/ui:
     dependencies:
+      '@ethannet/messages':
+        specifier: workspace:*
+        version: link:../../packages/messages
+      '@ethannet/navigation':
+        specifier: workspace:*
+        version: link:../../packages/navigation
       '@ethannet/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -148,6 +154,9 @@ importers:
       '@testing-library/react':
         specifier: ^16.1.0
         version: 16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@testing-library/user-event':
+        specifier: ^14.6.8
+        version: 14.6.8(@testing-library/dom@10.4.1)
       '@types/node':
         specifier: ^22.10.2
         version: 22.20.1
@@ -171,7 +180,40 @@ importers:
         version: 5.9.3
       vitest:
         specifier: '>=4.1.11'
-        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1(supports-color@8.1.1))(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+
+  packages/messages:
+    devDependencies:
+      '@ethannet/types':
+        specifier: workspace:*
+        version: link:../types
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: '>=4.1.11'
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+
+  packages/navigation:
+    devDependencies:
+      '@ethannet/messages':
+        specifier: workspace:*
+        version: link:../messages
+      '@ethannet/types':
+        specifier: workspace:*
+        version: link:../types
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: '>=4.1.11'
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
 
   packages/types:
     devDependencies:
@@ -1986,8 +2028,8 @@ packages:
       '@types/react-dom':
         optional: true
 
-  '@testing-library/user-event@14.6.6':
-    resolution: {integrity: sha512-Jbs9FpkkIDw8FgSc6kOVsOv8JuuqGAL7J4X1oot77JxAoDlkNn2GRkd0aYRVuQ+pVQAiHWVkE4rX/dkF5fBiCw==}
+  '@testing-library/user-event@14.6.8':
+    resolution: {integrity: sha512-vgSSqnANMnkcYR/vUNDbwS7aM3OErRLNUG8vCVVlj4oc6cKffUrccX7UAS5AmJQQNZTSibi9z5GvvRZ0aYgUCQ==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
@@ -6464,7 +6506,7 @@ snapshots:
       '@types/react': 19.3.0
       '@types/react-dom': 19.3.0(@types/react@19.3.0)
 
-  '@testing-library/user-event@14.6.6(@testing-library/dom@10.4.1)':
+  '@testing-library/user-event@14.6.8(@testing-library/dom@10.4.1)':
     dependencies:
       '@testing-library/dom': 10.4.1
 
@@ -8845,7 +8887,7 @@ snapshots:
       '@storybook/icons': 2.1.0(react@19.3.0)
       '@testing-library/dom': 10.4.1
       '@testing-library/jest-dom': 6.9.1
-      '@testing-library/user-event': 14.6.6(@testing-library/dom@10.4.1)
+      '@testing-library/user-event': 14.6.8(@testing-library/dom@10.4.1)
       '@vitest/expect': 3.2.4
       '@vitest/spy': 3.2.4
       '@webcontainer/env': 1.1.1
@@ -9169,7 +9211,7 @@ snapshots:
       tsx: 4.23.12
       yaml: 2.9.1
 
-  vitest@5.0.2(@types/node@22.20.1)(jsdom@25.0.1(supports-color@8.1.1))(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1)):
+  vitest@5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1)):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/mocker': 5.0.2(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))

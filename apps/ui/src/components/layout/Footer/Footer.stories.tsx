@@ -1,0 +1,32 @@
+import { messages } from "@ethannet/messages";
+import type { Meta, StoryObj } from "@storybook/react";
+import { sampleNavLinks, sampleSocialLinks } from "../fixtures";
+import { Footer } from "./Footer";
+
+const meta: Meta<typeof Footer> = {
+  title: "Layout/Footer",
+  component: Footer,
+  tags: ["autodocs"],
+  parameters: {
+    layout: "fullscreen",
+    docs: {
+      description: {
+        component:
+          "Site footer: repeats the main navigation and lists social links, which open in a new tab. Stacked on phones, a single row from 768px.",
+      },
+    },
+  },
+  args: {
+    navLinks: sampleNavLinks,
+    socialLinks: sampleSocialLinks,
+    messages: messages.Footer,
+  },
+};
+export default meta;
+
+type Story = StoryObj<typeof Footer>;
+
+export const Default: Story = {};
+
+/** The social list is omitted entirely when there are no social links. */
+export const NoSocialLinks: Story = { args: { socialLinks: [] } };
