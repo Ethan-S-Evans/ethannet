@@ -1,3 +1,4 @@
+import { messages } from "@ethannet/messages";
 import type { Meta, StoryObj } from "@storybook/react";
 import { sampleNavLinks, sampleSocialLinks } from "../fixtures";
 import { Footer } from "./Footer";
@@ -15,7 +16,11 @@ const meta: Meta<typeof Footer> = {
       },
     },
   },
-  args: { navLinks: sampleNavLinks, socialLinks: sampleSocialLinks },
+  args: {
+    navLinks: sampleNavLinks,
+    socialLinks: sampleSocialLinks,
+    messages: messages.Footer,
+  },
 };
 export default meta;
 

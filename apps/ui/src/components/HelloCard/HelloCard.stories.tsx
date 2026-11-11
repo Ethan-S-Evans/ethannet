@@ -1,3 +1,4 @@
+import { messages } from "@ethannet/messages";
 import type { Meta, StoryObj } from "@storybook/react";
 import { HelloCard } from "./HelloCard";
 
@@ -13,5 +14,6 @@ export const Default: Story = {
   args: {
     message: "Hello from Storybook!",
     timestamp: new Date().toISOString(),
+    messages: messages.HelloCard,
   },
 };

@@ -60,7 +60,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: '>=4.1.11'
-        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1(supports-color@8.1.1))(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
 
   apps/core:
     dependencies:
@@ -82,10 +82,13 @@ importers:
         version: 5.9.3
       vitest:
         specifier: '>=4.1.11'
-        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1(supports-color@8.1.1))(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
 
   apps/e2e:
     devDependencies:
+      '@ethannet/messages':
+        specifier: workspace:*
+        version: link:../../packages/messages
       '@playwright/test':
         specifier: ^1.49.1
         version: 1.62.1
@@ -119,10 +122,13 @@ importers:
         version: 5.9.3
       vitest:
         specifier: '>=4.1.11'
-        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1(supports-color@8.1.1))(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
 
   apps/ui:
     dependencies:
+      '@ethannet/messages':
+        specifier: workspace:*
+        version: link:../../packages/messages
       '@ethannet/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -174,7 +180,22 @@ importers:
         version: 5.9.3
       vitest:
         specifier: '>=4.1.11'
-        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1(supports-color@8.1.1))(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
+
+  packages/messages:
+    devDependencies:
+      '@ethannet/types':
+        specifier: workspace:*
+        version: link:../types
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.20.1
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: '>=4.1.11'
+        version: 5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))
 
   packages/types:
     devDependencies:
@@ -9172,7 +9193,7 @@ snapshots:
       tsx: 4.23.12
       yaml: 2.9.1
 
-  vitest@5.0.2(@types/node@22.20.1)(jsdom@25.0.1(supports-color@8.1.1))(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1)):
+  vitest@5.0.2(@types/node@22.20.1)(jsdom@25.0.1)(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1)):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/mocker': 5.0.2(vite@8.3.4(@types/node@22.20.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.12)(yaml@2.9.1))

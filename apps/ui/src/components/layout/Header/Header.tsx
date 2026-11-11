@@ -1,4 +1,5 @@
 import type { NavLink } from "@/config/navigation";
+import type { UiMessages } from "@ethannet/types";
 import { Logo } from "../Logo";
 import { MobileMenu } from "../MobileMenu";
 import { NavLinks } from "../NavLinks";
@@ -8,6 +9,8 @@ import styles from "./Header.module.css";
 export interface HeaderProps {
   /** Main navigation links, shown inline on desktop and in the mobile menu on phones. */
   links: NavLink[];
+  /** Copy for the header and the logo and mobile menu it contains. */
+  messages: Pick<UiMessages, "Header" | "Logo" | "MobileMenu">;
 }
 
 /**
@@ -15,15 +18,15 @@ export interface HeaderProps {
  * Mobile-first: below 768px the links live in the hamburger menu; at 768px and up
  * they're shown inline and the hamburger is hidden.
  */
-export function Header({ links }: HeaderProps) {
+export function Header({ links, messages }: HeaderProps) {
   return (
     <header className={styles.header}>
-      <Logo />
-      <nav aria-label="Main" className={styles.desktopNav}>
+      <Logo messages={messages.Logo} />
+      <nav aria-label={messages.Header.navLabel} className={styles.desktopNav}>
         <NavLinks links={links} />
       </nav>
       <div className={styles.mobileMenu}>
-        <MobileMenu links={links} />
+        <MobileMenu links={links} messages={messages.MobileMenu} />
       </div>
     </header>
   );

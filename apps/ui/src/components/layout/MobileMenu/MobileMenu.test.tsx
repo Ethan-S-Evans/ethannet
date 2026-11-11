@@ -1,4 +1,5 @@
 import type { NavLink } from "@/config/navigation";
+import { messages } from "@ethannet/messages";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
@@ -11,15 +12,20 @@ const links: NavLink[] = [
 
 function setup() {
   const user = userEvent.setup();
-  render(<MobileMenu links={links} />);
-  const toggle = screen.getByRole("button", { name: "Open menu" });
+  render(<MobileMenu links={links} messages={messages.MobileMenu} />);
+  const toggle = screen.getByRole("button", {
+    name: messages.MobileMenu.openLabel,
+  });
   const open = () => user.click(toggle);
   return { user, toggle, open };
 }
 
 // The panel stays mounted for its slide animation, so "closed" means hidden from
 // the accessibility tree rather than absent from the DOM.
-const panel = () => screen.queryByRole("navigation", { name: "Mobile" });
+const panel = () =>
+  screen.queryByRole("navigation", {
+    name: messages.MobileMenu.navLabel,
+  });
 
 describe("MobileMenu", () => {
   it("starts closed", () => {
@@ -46,7 +52,9 @@ describe("MobileMenu", () => {
   it("closes when the X button is clicked", async () => {
     const { user, toggle, open } = setup();
     await open();
-    await user.click(screen.getByRole("button", { name: "Close menu" }));
+    await user.click(
+      screen.getByRole("button", { name: messages.MobileMenu.closeLabel }),
+    );
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     expect(panel()).not.toBeInTheDocument();
   });

@@ -13,6 +13,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@ethannet/messages": "workspace:*",
     "@ethannet/types": "workspace:*",
     "next": "^16.3.6",
     "react": "^19.3.0",

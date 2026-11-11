@@ -1,3 +1,4 @@
+import { messages } from "@ethannet/messages";
 import { type Page, expect, test } from "@playwright/test";
 
 const navLinks = [
@@ -10,7 +11,8 @@ const socialLabels = ["GitHub", "LinkedIn", "Email"];
 
 // The panel stays in the DOM while closed (for its slide animation), so locate it by id.
 const panel = (page: Page) => page.locator("#mobile-menu");
-const toggle = (page: Page) => page.getByRole("button", { name: "Open menu" });
+const toggle = (page: Page) =>
+  page.getByRole("button", { name: messages.MobileMenu.openLabel });
 
 async function openMenu(page: Page) {
   await toggle(page).click();
@@ -32,7 +34,9 @@ test.describe("mobile", () => {
 
   test("shows the hamburger instead of inline links", async ({ page }) => {
     await expect(toggle(page)).toBeVisible();
-    await expect(page.getByRole("navigation", { name: "Main" })).toBeHidden();
+    await expect(
+      page.getByRole("navigation", { name: messages.Header.navLabel }),
+    ).toBeHidden();
     await expectClosed(page);
   });
 
@@ -47,7 +51,11 @@ test.describe("mobile", () => {
 
   test("X button closes the panel", async ({ page }) => {
     await openMenu(page);
-    await page.getByRole("button", { name: "Close menu" }).click();
+    await page
+      .getByRole("button", {
+        name: messages.MobileMenu.closeLabel,
+      })
+      .click();
     await expectClosed(page);
   });
 
@@ -77,7 +85,9 @@ test.describe("desktop", () => {
 
   test("shows nav links inline and hides the hamburger", async ({ page }) => {
     await page.goto("/");
-    const nav = page.getByRole("navigation", { name: "Main" });
+    const nav = page.getByRole("navigation", {
+      name: messages.Header.navLabel,
+    });
     for (const { label, href } of navLinks) {
       const link = nav.getByRole("link", { name: label });
       await expect(link).toBeVisible();
@@ -96,7 +106,9 @@ for (const viewport of [
 
     test("logo links home", async ({ page }) => {
       await page.goto("/");
-      const logo = page.getByRole("link", { name: "ethannet home" });
+      const logo = page.getByRole("link", {
+        name: messages.Logo.homeLabel,
+      });
       await expect(logo).toBeVisible();
       await expect(logo).toHaveAttribute("href", "/");
     });
@@ -105,7 +117,9 @@ for (const viewport of [
       await page.goto("/");
       const footer = page.getByRole("contentinfo");
       await expect(footer).toBeVisible();
-      const footerNav = footer.getByRole("navigation", { name: "Footer" });
+      const footerNav = footer.getByRole("navigation", {
+        name: messages.Footer.navLabel,
+      });
       for (const { label, href } of navLinks) {
         await expect(
           footerNav.getByRole("link", { name: label }),

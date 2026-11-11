@@ -1,0 +1,22 @@
+{
+  "Logo": {
+    "text": "ethannet",
+    "homeLabel": "ethannet home"
+  },
+  "Header": {
+    "navLabel": "Main"
+  },
+  "MobileMenu": {
+    "openLabel": "Open menu",
+    "closeLabel": "Close menu",
+    "navLabel": "Mobile"
+  },
+  "Footer": {
+    "navLabel": "Footer",
+    "socialLabel": "Social"
+  },
+  "HelloCard": {
+    "heading": "ethannet",
+    "receivedAtLabel": "Received at:"
+  }
+}

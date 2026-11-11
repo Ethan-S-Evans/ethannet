@@ -14,12 +14,12 @@ All in `apps/ui/src/components/layout/`, each in its own folder (e.g. `layout/He
 | `MobileMenu` | The hamburger button and the slide-out panel. The only client component. |
 | `Footer` | Repeats the nav links and lists social links. |
 
-The layout is the only place that imports the link lists. Every component takes its links as props, so it can be tested and shown in Storybook with any set of links:
+The layout is the only place that imports the link lists and the ui copy. Every component takes its links and its text as props, so it can be tested and shown in Storybook with any set of links. The text (the logo wordmark and every `aria-label`) comes from the shared [UI messages](ui-messages.md):
 
 ```tsx
-<Header links={navLinks} />
+<Header links={navLinks} messages={messages} />
 <main>{children}</main>
-<Footer navLinks={navLinks} socialLinks={socialLinks} />
+<Footer navLinks={navLinks} socialLinks={socialLinks} messages={messages.Footer} />
 ```
 
 The `<body>` is a full-height flex column and `<main>` grows to fill it, so the footer sits at the bottom even on short pages. Global styles and color variables are in `apps/ui/src/app/globals.css`.
@@ -27,7 +27,8 @@ The `<body>` is a full-height flex column and `<main>` grows to fill it, so the 
 ## Changing things
 
 - **Nav or social links**: edit `navLinks` and `socialLinks` in `apps/ui/src/config/navigation.ts`. The header, mobile menu and footer all pick up the change.
-- **Logo**: replace the text in `Logo.tsx` with a `next/image`. Keep `aria-label="ethannet home"`, which the tests and screen readers use.
+- **Labels and wordmark text**: edit the `Logo`, `Header`, `MobileMenu` and `Footer` namespaces in `packages/messages/messages/en.json`. The unit and e2e tests read the same file, so they keep passing. See [UI messages](ui-messages.md).
+- **Logo**: replace the text in `Logo.tsx` with a `next/image`. Keep `aria-label={messages.homeLabel}`, which the tests and screen readers use.
 - **Breakpoint**: the switch from hamburger to inline links happens at `min-width: 768px` in `Header.module.css`. `Footer.module.css` uses the same breakpoint to go from stacked to a single row.
 - **Colors and header height**: CSS variables at the top of `globals.css`.
 

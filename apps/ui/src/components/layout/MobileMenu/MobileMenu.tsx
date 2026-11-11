@@ -1,6 +1,7 @@
 "use client";
 
 import type { NavLink } from "@/config/navigation";
+import type { UiMessages } from "@ethannet/types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { NavLinks } from "../NavLinks";
 import styles from "./MobileMenu.module.css";
@@ -9,6 +10,8 @@ import styles from "./MobileMenu.module.css";
 export interface MobileMenuProps {
   /** Links shown in the slide-out panel. */
   links: NavLink[];
+  /** Accessible names for the hamburger, the X button and the panel. */
+  messages: UiMessages["MobileMenu"];
 }
 
 /**
@@ -16,7 +19,7 @@ export interface MobileMenuProps {
  * The panel closes on the X button, a backdrop click, Escape, or any link click.
  * Hidden at desktop widths by the header's CSS.
  */
-export function MobileMenu({ links }: MobileMenuProps) {
+export function MobileMenu({ links, messages }: MobileMenuProps) {
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -42,7 +45,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
         ref={toggleRef}
         type="button"
         className={styles.toggle}
-        aria-label="Open menu"
+        aria-label={messages.openLabel}
         aria-expanded={open}
         aria-controls="mobile-menu"
         onClick={() => setOpen(true)}
@@ -62,7 +65,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
       {/* Kept mounted so the slide transition can run; inert + aria-hidden while closed. */}
       <nav
         id="mobile-menu"
-        aria-label="Mobile"
+        aria-label={messages.navLabel}
         className={`${styles.panel} ${open ? styles.panelOpen : ""}`}
         aria-hidden={!open}
         inert={!open}
@@ -71,7 +74,7 @@ export function MobileMenu({ links }: MobileMenuProps) {
           ref={closeRef}
           type="button"
           className={styles.close}
-          aria-label="Close menu"
+          aria-label={messages.closeLabel}
           onClick={close}
         >
           <span aria-hidden="true">×</span>

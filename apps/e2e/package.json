@@ -6,6 +6,7 @@
     "test:e2e": "playwright test"
   },
   "devDependencies": {
+    "@ethannet/messages": "workspace:*",
     "@playwright/test": "^1.49.1"
   }
 }

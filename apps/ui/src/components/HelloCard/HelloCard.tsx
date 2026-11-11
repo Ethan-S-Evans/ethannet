@@ -1,12 +1,20 @@
-import type { HelloResponse } from "@ethannet/types";
+import type { HelloResponse, UiMessages } from "@ethannet/types";
 
-export function HelloCard({ message, timestamp }: HelloResponse) {
+/** Props for {@link HelloCard}: the api response plus the card's own copy. */
+export interface HelloCardProps extends HelloResponse {
+  /** The heading and the label shown before the timestamp. */
+  messages: UiMessages["HelloCard"];
+}
+
+export function HelloCard({ message, timestamp, messages }: HelloCardProps) {
   return (
     <section style={{ fontFamily: "sans-serif", padding: "2rem" }}>
-      <h1>ethannet</h1>
+      <h1>{messages.heading}</h1>
       <p>{message}</p>
       <p>
-        <small>Received at: {timestamp}</small>
+        <small>
+          {messages.receivedAtLabel} {timestamp}
+        </small>
       </p>
     </section>
   );

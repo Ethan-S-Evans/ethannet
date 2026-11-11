@@ -1,6 +1,7 @@
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { navLinks, socialLinks } from "@/config/navigation";
+import { messages } from "@ethannet/messages";
 import type { ReactNode } from "react";
 import "./globals.css";
 
@@ -9,14 +10,19 @@ export const metadata = {
   description: "Minimal pnpm + TypeScript + Express + Next.js monorepo",
 };
 
-// Composition root: the only place the navigation config is wired into components.
+// Composition root: the only place the navigation config and the shared messages
+// are wired into layout components.
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <Header links={navLinks} />
+        <Header links={navLinks} messages={messages} />
         <main>{children}</main>
-        <Footer navLinks={navLinks} socialLinks={socialLinks} />
+        <Footer
+          navLinks={navLinks}
+          socialLinks={socialLinks}
+          messages={messages.Footer}
+        />
       </body>
     </html>
   );

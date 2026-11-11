@@ -1,3 +1,4 @@
+import { messages } from "@ethannet/messages";
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, within } from "storybook/test";
 import { sampleNavLinks } from "../fixtures";
@@ -16,7 +17,7 @@ const meta: Meta<typeof MobileMenu> = {
     },
   },
   globals: { viewport: { value: "mobile2", isRotated: false } },
-  args: { links: sampleNavLinks },
+  args: { links: sampleNavLinks, messages: messages.MobileMenu },
 };
 export default meta;
 
@@ -28,11 +29,13 @@ export const Closed: Story = {};
 export const Open: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const toggle = canvas.getByRole("button", { name: "Open menu" });
+    const toggle = canvas.getByRole("button", {
+      name: messages.MobileMenu.openLabel,
+    });
     await userEvent.click(toggle);
     await expect(toggle).toHaveAttribute("aria-expanded", "true");
     await expect(
-      canvas.getByRole("navigation", { name: "Mobile" }),
+      canvas.getByRole("navigation", { name: messages.MobileMenu.navLabel }),
     ).toBeInTheDocument();
   },
 };
