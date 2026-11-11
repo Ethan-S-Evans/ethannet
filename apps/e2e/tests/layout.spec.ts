@@ -1,19 +1,23 @@
-import { messages } from "@ethannet/messages";
-import {
-  navLinks as navLinkConfig,
-  resolveLinks,
-  socialLinks as socialLinkConfig,
-} from "@ethannet/navigation";
 import { type Page, expect, test } from "@playwright/test";
 
-// Resolved the same way app/layout.tsx does, so routes and labels can't drift.
-const navLinks = resolveLinks(navLinkConfig, messages.Navigation);
-const socialLinks = resolveLinks(socialLinkConfig, messages.Social);
+// Copy and routes are written out on purpose: these tests check what a visitor
+// actually sees and hears, so a wrong label or route fails here even when it
+// matches the app's own messages or link config.
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Projects", href: "/projects" },
+  { label: "Contact", href: "/contact" },
+];
+const socialLinks = [
+  { label: "GitHub", href: "https://github.com/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/" },
+  { label: "Email", href: "mailto:hello@example.com" },
+];
 
 // The panel stays in the DOM while closed (for its slide animation), so locate it by id.
 const panel = (page: Page) => page.locator("#mobile-menu");
-const toggle = (page: Page) =>
-  page.getByRole("button", { name: messages.MobileMenu.openLabel });
+const toggle = (page: Page) => page.getByRole("button", { name: "Open menu" });
 
 async function openMenu(page: Page) {
   await toggle(page).click();
@@ -35,9 +39,7 @@ test.describe("mobile", () => {
 
   test("shows the hamburger instead of inline links", async ({ page }) => {
     await expect(toggle(page)).toBeVisible();
-    await expect(
-      page.getByRole("navigation", { name: messages.Header.navLabel }),
-    ).toBeHidden();
+    await expect(page.getByRole("navigation", { name: "Main" })).toBeHidden();
     await expectClosed(page);
   });
 
@@ -54,7 +56,7 @@ test.describe("mobile", () => {
     await openMenu(page);
     await page
       .getByRole("button", {
-        name: messages.MobileMenu.closeLabel,
+        name: "Close menu",
       })
       .click();
     await expectClosed(page);
@@ -75,9 +77,7 @@ test.describe("mobile", () => {
 
   test("clicking a link closes the panel and navigates", async ({ page }) => {
     await openMenu(page);
-    await panel(page)
-      .getByRole("link", { name: messages.Navigation.home })
-      .click();
+    await panel(page).getByRole("link", { name: "Home" }).click();
     await expectClosed(page);
     await expect(page).toHaveURL("/");
   });
@@ -89,7 +89,7 @@ test.describe("desktop", () => {
   test("shows nav links inline and hides the hamburger", async ({ page }) => {
     await page.goto("/");
     const nav = page.getByRole("navigation", {
-      name: messages.Header.navLabel,
+      name: "Main",
     });
     for (const { label, href } of navLinks) {
       const link = nav.getByRole("link", { name: label });
@@ -110,7 +110,7 @@ for (const viewport of [
     test("logo links home", async ({ page }) => {
       await page.goto("/");
       const logo = page.getByRole("link", {
-        name: messages.Logo.homeLabel,
+        name: "ethannet home",
       });
       await expect(logo).toBeVisible();
       await expect(logo).toHaveAttribute("href", "/");
@@ -121,7 +121,7 @@ for (const viewport of [
       const footer = page.getByRole("contentinfo");
       await expect(footer).toBeVisible();
       const footerNav = footer.getByRole("navigation", {
-        name: messages.Footer.navLabel,
+        name: "Footer",
       });
       for (const { label, href } of navLinks) {
         await expect(

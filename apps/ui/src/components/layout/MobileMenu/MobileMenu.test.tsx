@@ -1,9 +1,14 @@
-import { messages } from "@ethannet/messages";
-import type { NavLink } from "@ethannet/types";
+import type { NavLink, UiMessages } from "@ethannet/types";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { MobileMenu } from "./MobileMenu";
+
+const messages: UiMessages["MobileMenu"] = {
+  openLabel: "Test open",
+  closeLabel: "Test close",
+  navLabel: "Test mobile nav",
+};
 
 const links: NavLink[] = [
   { label: "Home", href: "/" },
@@ -12,9 +17,9 @@ const links: NavLink[] = [
 
 function setup() {
   const user = userEvent.setup();
-  render(<MobileMenu links={links} messages={messages.MobileMenu} />);
+  render(<MobileMenu links={links} messages={messages} />);
   const toggle = screen.getByRole("button", {
-    name: messages.MobileMenu.openLabel,
+    name: messages.openLabel,
   });
   const open = () => user.click(toggle);
   return { user, toggle, open };
@@ -24,7 +29,7 @@ function setup() {
 // the accessibility tree rather than absent from the DOM.
 const panel = () =>
   screen.queryByRole("navigation", {
-    name: messages.MobileMenu.navLabel,
+    name: messages.navLabel,
   });
 
 describe("MobileMenu", () => {
@@ -52,9 +57,7 @@ describe("MobileMenu", () => {
   it("closes when the X button is clicked", async () => {
     const { user, toggle, open } = setup();
     await open();
-    await user.click(
-      screen.getByRole("button", { name: messages.MobileMenu.closeLabel }),
-    );
+    await user.click(screen.getByRole("button", { name: messages.closeLabel }));
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     expect(panel()).not.toBeInTheDocument();
   });

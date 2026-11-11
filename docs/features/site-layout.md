@@ -27,15 +27,15 @@ const resolvedSocialLinks = resolveLinks(socialLinks, messages.Social);
 <Footer navLinks={resolvedNavLinks} socialLinks={resolvedSocialLinks} messages={messages.Footer} />
 ```
 
-It's a workspace package rather than ui config so the [layout e2e spec](../../apps/e2e/tests/layout.spec.ts) can resolve the same lists. A side effect is that e2e checks the hrefs match the config, not a separately written list of routes; the config's own unit tests check the hrefs are well formed and unique.
+Its own unit tests check that hrefs are well formed and unique and that every link has a label. The [layout e2e spec](../../apps/e2e/tests/layout.spec.ts) doesn't import it: it writes out the expected labels and routes so a mistake in the config fails the test.
 
 The `<body>` is a full-height flex column and `<main>` grows to fill it, so the footer sits at the bottom even on short pages. Global styles and color variables are in `apps/ui/src/app/globals.css`.
 
 ## Changing things
 
-- **Nav or social link routes**: edit `navLinks` and `socialLinks` in `packages/navigation/src/index.ts`. The header, mobile menu, footer and e2e spec all pick up the change.
+- **Nav or social link routes**: edit `navLinks` and `socialLinks` in `packages/navigation/src/index.ts`. The header, mobile menu and footer all pick up the change; update the e2e spec's expected links to match.
 - **Add a link**: add its label key to `Navigation` (or `Social`) in `UiMessages` and `en.json`, then add `{ id, href }` to the list. Typecheck fails if the id has no message, and `pnpm --filter @ethannet/navigation test` fails if a message has no link.
-- **Labels and wordmark text**: edit the `Logo`, `Header`, `MobileMenu`, `Footer`, `Navigation` and `Social` namespaces in `packages/messages/messages/en.json`. The unit and e2e tests read the same file, so they keep passing. See [UI messages](ui-messages.md).
+- **Labels and wordmark text**: edit the `Logo`, `Header`, `MobileMenu`, `Footer`, `Navigation` and `Social` namespaces in `packages/messages/messages/en.json`. Unit tests use their own made-up copy, so they keep passing; the e2e spec checks the real copy, so update it when you rename a label it uses. See [UI messages](ui-messages.md).
 - **Logo**: replace the text in `Logo.tsx` with a `next/image`. Keep `aria-label={messages.homeLabel}`, which the tests and screen readers use.
 - **Breakpoint**: the switch from hamburger to inline links happens at `min-width: 768px` in `Header.module.css`. `Footer.module.css` uses the same breakpoint to go from stacked to a single row.
 - **Colors and header height**: CSS variables at the top of `globals.css`.

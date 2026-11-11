@@ -1,8 +1,17 @@
-import { messages } from "@ethannet/messages";
-import type { NavLink } from "@ethannet/types";
+import type { NavLink, UiMessages } from "@ethannet/types";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Header } from "./Header";
+
+const messages: Pick<UiMessages, "Header" | "Logo" | "MobileMenu"> = {
+  Header: { navLabel: "Test main nav" },
+  Logo: { text: "test-logo", homeLabel: "Test home" },
+  MobileMenu: {
+    openLabel: "Test open",
+    closeLabel: "Test close",
+    navLabel: "Test mobile nav",
+  },
+};
 
 const links: NavLink[] = [
   { label: "Home", href: "/" },

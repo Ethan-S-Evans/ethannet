@@ -86,12 +86,6 @@ importers:
 
   apps/e2e:
     devDependencies:
-      '@ethannet/messages':
-        specifier: workspace:*
-        version: link:../../packages/messages
-      '@ethannet/navigation':
-        specifier: workspace:*
-        version: link:../../packages/navigation
       '@playwright/test':
         specifier: ^1.49.1
         version: 1.62.1

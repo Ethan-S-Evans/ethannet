@@ -1,8 +1,12 @@
-import { messages } from "@ethannet/messages";
-import type { NavLink, SocialLink } from "@ethannet/types";
+import type { NavLink, SocialLink, UiMessages } from "@ethannet/types";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Footer } from "./Footer";
+
+const messages: UiMessages["Footer"] = {
+  navLabel: "Test footer nav",
+  socialLabel: "Test social",
+};
 
 const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
@@ -18,11 +22,11 @@ describe("Footer", () => {
       <Footer
         navLinks={navLinks}
         socialLinks={socialLinks}
-        messages={messages.Footer}
+        messages={messages}
       />,
     );
     const nav = screen.getByRole("navigation", {
-      name: messages.Footer.navLabel,
+      name: messages.navLabel,
     });
     expect(within(nav).getByRole("link", { name: "Home" })).toHaveAttribute(
       "href",
@@ -39,7 +43,7 @@ describe("Footer", () => {
       <Footer
         navLinks={navLinks}
         socialLinks={socialLinks}
-        messages={messages.Footer}
+        messages={messages}
       />,
     );
     const github = screen.getByRole("link", { name: "GitHub" });
@@ -49,15 +53,9 @@ describe("Footer", () => {
   });
 
   it("omits the social list when there are no social links", () => {
-    render(
-      <Footer
-        navLinks={navLinks}
-        socialLinks={[]}
-        messages={messages.Footer}
-      />,
-    );
+    render(<Footer navLinks={navLinks} socialLinks={[]} messages={messages} />);
     expect(
-      screen.queryByRole("list", { name: messages.Footer.socialLabel }),
+      screen.queryByRole("list", { name: messages.socialLabel }),
     ).not.toBeInTheDocument();
   });
 
@@ -66,7 +64,7 @@ describe("Footer", () => {
       <Footer
         navLinks={navLinks}
         socialLinks={socialLinks}
-        messages={messages.Footer}
+        messages={messages}
       />,
     );
     expect(screen.getByRole("contentinfo")).not.toHaveTextContent(
