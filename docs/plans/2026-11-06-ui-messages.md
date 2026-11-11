@@ -27,3 +27,13 @@ The layout e2e spec found the hamburger with `getByRole("button", { name: "Open 
 ## As built
 
 Built as planned. Running `pnpm lint:fix` also formatted `packages/types/src/index.ts` (semicolons, and `import type` for `MIMEType`). Biome's `node:util` protocol warning there was already present and is left as is.
+
+### Follow-up: link labels
+
+Added after the first commit, at the user's request, to cover the last hardcoded copy.
+
+- Nav and social link labels moved into new `Navigation` and `Social` namespaces in `en.json` and `UiMessages`.
+- `apps/ui/src/config/navigation.ts` was replaced by a new workspace package, `packages/navigation` (`@ethannet/navigation`). Its lists hold `{ id, href }`, where `id` is a message key (`NavLinkId`, `SocialLinkId`, derived from `UiMessages`). The `NavLink`, `SocialLink` and `LinkConfig` types moved to `packages/types`.
+- A pure `resolveLinks(links, labels)` turns the config into `{ label, href }` links. `app/layout.tsx` and `layout.spec.ts` both call it, so the e2e spec no longer keeps its own list of links.
+- Trade-off, accepted: e2e now checks hrefs against the shared config rather than an independent list. The package's unit tests check hrefs are unique and well formed instead.
+- Header, Footer, MobileMenu and NavLinks are unchanged apart from where they import the link types from. The Storybook fixtures keep their own sample links.

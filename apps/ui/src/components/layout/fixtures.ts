@@ -1,4 +1,4 @@
-import type { NavLink, SocialLink } from "@/config/navigation";
+import type { NavLink, SocialLink } from "@ethannet/types";
 
 /** Sample links for stories, kept separate from the real config so stories stay stable. */
 export const sampleNavLinks: NavLink[] = [

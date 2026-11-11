@@ -1,5 +1,4 @@
-import type { NavLink, SocialLink } from "@/config/navigation";
-import type { UiMessages } from "@ethannet/types";
+import type { NavLink, SocialLink, UiMessages } from "@ethannet/types";
 import { NavLinks } from "../NavLinks";
 import styles from "./Footer.module.css";
 

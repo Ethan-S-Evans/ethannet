@@ -1,4 +1,4 @@
-import type { NavLink } from "@/config/navigation";
+import type { NavLink } from "@ethannet/types";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";

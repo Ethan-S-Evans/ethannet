@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@ethannet/messages": "workspace:*",
+    "@ethannet/navigation": "workspace:*",
     "@ethannet/types": "workspace:*",
     "next": "^16.3.6",
     "react": "^19.3.0",

@@ -7,6 +7,7 @@
   },
   "devDependencies": {
     "@ethannet/messages": "workspace:*",
+    "@ethannet/navigation": "workspace:*",
     "@playwright/test": "^1.49.1"
   }
 }

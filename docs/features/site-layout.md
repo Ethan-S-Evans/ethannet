@@ -14,20 +14,28 @@ All in `apps/ui/src/components/layout/`, each in its own folder (e.g. `layout/He
 | `MobileMenu` | The hamburger button and the slide-out panel. The only client component. |
 | `Footer` | Repeats the nav links and lists social links. |
 
-The layout is the only place that imports the link lists and the ui copy. Every component takes its links and its text as props, so it can be tested and shown in Storybook with any set of links. The text (the logo wordmark and every `aria-label`) comes from the shared [UI messages](ui-messages.md):
+The layout is the only place that imports the link lists and the ui copy. Every component takes its links and its text as props, so it can be tested and shown in Storybook with any set of links. The text (the logo wordmark, every `aria-label` and every link label) comes from the shared [UI messages](ui-messages.md).
+
+The link lists live in `packages/navigation` (`@ethannet/navigation`). Each entry holds a route and the message key of its label, not the label itself, and the layout resolves them into `{ label, href }` links:
 
 ```tsx
-<Header links={navLinks} messages={messages} />
+const resolvedNavLinks = resolveLinks(navLinks, messages.Navigation);
+const resolvedSocialLinks = resolveLinks(socialLinks, messages.Social);
+
+<Header links={resolvedNavLinks} messages={messages} />
 <main>{children}</main>
-<Footer navLinks={navLinks} socialLinks={socialLinks} messages={messages.Footer} />
+<Footer navLinks={resolvedNavLinks} socialLinks={resolvedSocialLinks} messages={messages.Footer} />
 ```
+
+It's a workspace package rather than ui config so the [layout e2e spec](../../apps/e2e/tests/layout.spec.ts) can resolve the same lists. A side effect is that e2e checks the hrefs match the config, not a separately written list of routes; the config's own unit tests check the hrefs are well formed and unique.
 
 The `<body>` is a full-height flex column and `<main>` grows to fill it, so the footer sits at the bottom even on short pages. Global styles and color variables are in `apps/ui/src/app/globals.css`.
 
 ## Changing things
 
-- **Nav or social links**: edit `navLinks` and `socialLinks` in `apps/ui/src/config/navigation.ts`. The header, mobile menu and footer all pick up the change.
-- **Labels and wordmark text**: edit the `Logo`, `Header`, `MobileMenu` and `Footer` namespaces in `packages/messages/messages/en.json`. The unit and e2e tests read the same file, so they keep passing. See [UI messages](ui-messages.md).
+- **Nav or social link routes**: edit `navLinks` and `socialLinks` in `packages/navigation/src/index.ts`. The header, mobile menu, footer and e2e spec all pick up the change.
+- **Add a link**: add its label key to `Navigation` (or `Social`) in `UiMessages` and `en.json`, then add `{ id, href }` to the list. Typecheck fails if the id has no message, and `pnpm --filter @ethannet/navigation test` fails if a message has no link.
+- **Labels and wordmark text**: edit the `Logo`, `Header`, `MobileMenu`, `Footer`, `Navigation` and `Social` namespaces in `packages/messages/messages/en.json`. The unit and e2e tests read the same file, so they keep passing. See [UI messages](ui-messages.md).
 - **Logo**: replace the text in `Logo.tsx` with a `next/image`. Keep `aria-label={messages.homeLabel}`, which the tests and screen readers use.
 - **Breakpoint**: the switch from hamburger to inline links happens at `min-width: 768px` in `Header.module.css`. `Footer.module.css` uses the same breakpoint to go from stacked to a single row.
 - **Colors and header height**: CSS variables at the top of `globals.css`.

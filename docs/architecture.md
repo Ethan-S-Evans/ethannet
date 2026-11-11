@@ -9,6 +9,7 @@
 - `apps/e2e` — Playwright end-to-end tests that exercise api + ui together. It's a workspace package rather than living inside either app, since it depends on both.
 - `packages/types` — TypeScript types shared between api and ui (API request/response contracts, and the `UiMessages` copy contract).
 - `packages/messages` — the ui copy as next-intl-style JSON (`messages/en.json`), shared by ui components and tests so they can't drift. See [UI messages](features/ui-messages.md).
+- `packages/navigation` — the site link config (`navLinks`, `socialLinks`: each a route plus the message key of its label) and `resolveLinks`, shared by the ui layout and the e2e suite. See [Site layout](features/site-layout.md).
 - `docs` — documentation for the whole repo: [plans](plans) (one per piece of work, named `YYYY-MM-DD-short-slug.md`) and [features](features), which describe how each feature works and how to test it (e.g. [Site layout](features/site-layout.md)).
 
 `apps/` holds things that run or deploy; `packages/` holds things apps import. This mirrors the convention used by Turborepo, Vercel's examples, and the T3 stack.
@@ -17,9 +18,9 @@
 
 `packages/types/package.json` points its `main`/`types`/`exports` directly at `./src/index.ts` — real TypeScript source, not compiled output. pnpm symlinks `node_modules/@ethannet/types` to `packages/types`, so both api and ui resolve `@ethannet/types` straight to source.
 
-`packages/messages` works the same way, except that it's a runtime import (a JSON object), not `import type`.
+`packages/messages` and `packages/navigation` work the same way, except that they're runtime imports (a JSON object, and plain arrays and a function), not `import type`.
 
-- **Next.js** normally refuses to process `.ts` files under `node_modules`, even symlinked workspace ones. `transpilePackages: ["@ethannet/messages", "@ethannet/types"]` in `apps/ui/next.config.ts` is the documented escape hatch for monorepo-internal packages.
+- **Next.js** normally refuses to process `.ts` files under `node_modules`, even symlinked workspace ones. `transpilePackages: ["@ethannet/messages", "@ethannet/navigation", "@ethannet/types"]` in `apps/ui/next.config.ts` is the documented escape hatch for monorepo-internal packages.
 - **Express** dev loop uses `tsx watch`, which transpiles any `.ts` file it imports regardless of where it lives, so no extra config is needed.
 
 Both consumers `import type` the shared interfaces, so there's zero runtime coupling — editing `packages/types/src/index.ts` is picked up immediately by both apps with no build step in between.

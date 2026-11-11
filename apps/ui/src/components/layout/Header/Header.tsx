@@ -1,5 +1,4 @@
-import type { NavLink } from "@/config/navigation";
-import type { UiMessages } from "@ethannet/types";
+import type { NavLink, UiMessages } from "@ethannet/types";
 import { Logo } from "../Logo";
 import { MobileMenu } from "../MobileMenu";
 import { NavLinks } from "../NavLinks";

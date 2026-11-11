@@ -1,5 +1,5 @@
-import type { NavLink } from "@/config/navigation";
 import { messages } from "@ethannet/messages";
+import type { NavLink } from "@ethannet/types";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Header } from "./Header";

@@ -10,7 +10,7 @@ All ui copy, meaning visible text and accessible names such as `aria-label`, com
 | `packages/messages/messages/en.json` | The English copy. **Edit copy here.** |
 | `packages/messages/src/index.ts` | Exports `messages: UiMessages` from `en.json`. The type annotation makes `tsc` fail if the JSON is missing a key or has the wrong shape. |
 
-The JSON has one namespace per component (`Logo`, `Header`, `MobileMenu`, `Footer`, `HelloCard`), like next-intl:
+The JSON has one namespace per component (`Logo`, `Header`, `MobileMenu`, `Footer`, `HelloCard`), like next-intl, plus `Navigation` and `Social` for the labels of the site links:
 
 ```json
 {
@@ -29,11 +29,15 @@ The JSON has one namespace per component (`Logo`, `Header`, `MobileMenu`, `Foote
 Components never import `@ethannet/messages`. Each one takes only its own namespace as a `messages` prop, and the composition roots inject it: `app/layout.tsx` for the [site layout](site-layout.md), and each page for its own components.
 
 ```tsx
-<Header links={navLinks} messages={messages} />
-<Footer navLinks={navLinks} socialLinks={socialLinks} messages={messages.Footer} />
+<Header links={resolvedNavLinks} messages={messages} />
+<Footer navLinks={resolvedNavLinks} socialLinks={resolvedSocialLinks} messages={messages.Footer} />
 ```
 
 `Header` takes `Pick<UiMessages, "Header" | "Logo" | "MobileMenu">` and passes each part down to `Logo` and `MobileMenu`.
+
+### Link labels
+
+The site links are configured in `packages/navigation` as `{ id, href }`, where `id` is a key of `UiMessages["Navigation"]` (or `["Social"]`). `resolveLinks(links, labels)` swaps each id for its label, so components still receive plain `{ label, href }` links. The `NavLinkId` and `SocialLinkId` types are derived from `UiMessages`, so a link whose id has no message fails typecheck. See [Site layout](site-layout.md).
 
 ## Changing things
 
@@ -54,13 +58,13 @@ page.getByRole("button", { name: messages.MobileMenu.openLabel });
 ```
 
 - `pnpm --filter @ethannet/messages test` checks that the export matches `en.json` and that every value is a non-empty string.
-- `pnpm typecheck` checks that `en.json` matches `UiMessages`.
+- `pnpm typecheck` checks that `en.json` matches `UiMessages`, and that every link id in `packages/navigation` has a message.
+- `pnpm --filter @ethannet/navigation test` checks `resolveLinks`, and that every `Navigation`/`Social` message has a link and every href is well formed and unique.
 - The ui unit tests and [layout e2e spec](../../apps/e2e/tests/layout.spec.ts) find elements by the same messages the components render.
 
-To check that nothing is hardcoded, change some values in `en.json` (e.g. `"Open menu"` → `"Show navigation"`) and run `pnpm test` and `pnpm test:e2e`. Both should still pass. Revert the change afterwards.
+To check that nothing is hardcoded, change some values in `en.json` (e.g. `"Open menu"` → `"Show navigation"`, `"About"` → `"About me"`) and run `pnpm test` and `pnpm test:e2e`. Both should still pass. Revert the change afterwards.
 
 ## Edge cases and limits
 
-- **Navigation link labels** ("Home", "About", …) and social labels are still in `apps/ui/src/config/navigation.ts`, and `layout.spec.ts` still has its own copy of them. They aren't in the messages yet.
 - **No interpolation**: values are plain strings. `HelloCard` renders `receivedAtLabel` followed by the timestamp rather than using an ICU `{timestamp}` placeholder.
 - **Extra keys** in `en.json` that `UiMessages` doesn't have don't fail typecheck. Remove unused keys by hand.

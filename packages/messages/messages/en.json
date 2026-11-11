@@ -15,6 +15,17 @@
     "navLabel": "Footer",
     "socialLabel": "Social"
   },
+  "Navigation": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "Social": {
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "email": "Email"
+  },
   "HelloCard": {
     "heading": "ethannet",
     "receivedAtLabel": "Received at:"

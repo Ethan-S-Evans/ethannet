@@ -1,13 +1,14 @@
 import { messages } from "@ethannet/messages";
+import {
+  navLinks as navLinkConfig,
+  resolveLinks,
+  socialLinks as socialLinkConfig,
+} from "@ethannet/navigation";
 import { type Page, expect, test } from "@playwright/test";
 
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Projects", href: "/projects" },
-  { label: "Contact", href: "/contact" },
-];
-const socialLabels = ["GitHub", "LinkedIn", "Email"];
+// Resolved the same way app/layout.tsx does, so routes and labels can't drift.
+const navLinks = resolveLinks(navLinkConfig, messages.Navigation);
+const socialLinks = resolveLinks(socialLinkConfig, messages.Social);
 
 // The panel stays in the DOM while closed (for its slide animation), so locate it by id.
 const panel = (page: Page) => page.locator("#mobile-menu");
@@ -74,7 +75,9 @@ test.describe("mobile", () => {
 
   test("clicking a link closes the panel and navigates", async ({ page }) => {
     await openMenu(page);
-    await panel(page).getByRole("link", { name: "Home" }).click();
+    await panel(page)
+      .getByRole("link", { name: messages.Navigation.home })
+      .click();
     await expectClosed(page);
     await expect(page).toHaveURL("/");
   });
@@ -125,8 +128,10 @@ for (const viewport of [
           footerNav.getByRole("link", { name: label }),
         ).toHaveAttribute("href", href);
       }
-      for (const label of socialLabels) {
-        await expect(footer.getByRole("link", { name: label })).toBeVisible();
+      for (const { label, href } of socialLinks) {
+        const link = footer.getByRole("link", { name: label });
+        await expect(link).toBeVisible();
+        await expect(link).toHaveAttribute("href", href);
       }
     });
   });
