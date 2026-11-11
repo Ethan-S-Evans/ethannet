@@ -20,6 +20,20 @@ export interface MediaFile extends MediaFileMetadata {
 }
 
 /**
+ * One entry in the media-server's file listing (`GET /api/media`). A lightweight
+ * summary for browsing: fetch the file itself from `url`, which is served by the
+ * media-server's static route.
+ */
+export interface MediaFileSummary {
+  /** File name, unique within the media directory. */
+  name: string;
+  /** Size in bytes. */
+  size: number;
+  /** Path to the file on the media-server, e.g. `/media/clip.mp4` (URL-encoded). */
+  url: string;
+}
+
+/**
  * Every piece of ui copy (visible text and accessible names), grouped into one
  * namespace per component in the style of next-intl message files.
  *

@@ -1,6 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import type { MediaFile } from "@ethannet/types";
+import type { MediaFileSummary } from "@ethannet/types";
 import { Router } from "express";
 
 export function resolveMediaDir(): string {
@@ -9,12 +9,12 @@ export function resolveMediaDir(): string {
     : path.resolve(process.cwd(), "media");
 }
 
-export async function listMediaFiles(mediaDir: string): Promise<MediaFile[]> {
+export async function listMediaFiles(mediaDir: string): Promise<MediaFileSummary[]> {
   const entries = await fs.readdir(mediaDir, { withFileTypes: true });
   const files = await Promise.all(
     entries
       .filter((entry) => entry.isFile() && !entry.name.startsWith("."))
-      .map(async (entry): Promise<MediaFile> => {
+      .map(async (entry): Promise<MediaFileSummary> => {
         const stats = await fs.stat(path.join(mediaDir, entry.name));
         return {
           name: entry.name,
